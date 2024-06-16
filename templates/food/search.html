@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);  /* 3 columns layout */
+        grid-gap: 20px;
+    }
+    .box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+        position: relative;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px 10px 0 0;
+    }
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination a {
+        margin: 0 5px;
+        padding: 10px 15px;
+        border: 1px solid #ccc;
+        text-decoration: none;
+        color: #333;
+    }
+    .pagination a.active {
+        background-color: #333;
+        color: #fff;
+        border-color: #333;
+    }
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+    .button-container button {
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        color: white;
+    }
+    .add-button {
+        background-color: green;
+    }
+    .more-button {
+        background-color: blue;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        text-align: center;
+        display: inline-block;
+    }
+</style>
+
+<div class="container">
+    <h2>Search Results for "{{ query }}"</h2>
+    <div class="grid">
+        {% if results %}
+            {% for product in results %}
+                <div class="box">
+                    <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
+                    <p><strong>{{ product.product_name }}</strong></p>
+                    <p>Barcode: {{ product.code }}</p>
+                    <div class="button-container">
+                        <button class="add-button" onclick="addToInventory('{{ product.code }}')">Add to Inventory</button>
+                        <a href="{{ url_for('mainbp.product_detail', barcode=product.code) }}" class="more-button">Show More</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+    {% if results %}
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('inventory_bp.search', query=query, page=page-1) }}">Previous</a>
+            {% endif %}
+            {% for p in range(1, (total // per_page) + 2) %}
+                <a href="{{ url_for('inventory_bp.search', query=query, page=p) }}" class="{{ 'active' if p == page else '' }}">{{ p }}</a>
+            {% endfor %}
+            {% if page < (total // per_page) + 1 %}
+                <a href="{{ url_for('inventory_bp.search', query=query, page=page+1) }}">Next</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    async function addToInventory(barcode) {
+        try {
+            const response = await fetch('/account/add_food_item_by_barcode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    barcode: barcode,
+                    amount: 1,
+                    units: 'pcs',
+                    expiration_date: '2024-12-31'
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('Product added to inventory');
+            } else {
+                alert('Failed to add product to inventory: ' + result.error);
+            }
+        } catch (error) {
+            alert('Error: ' + error);
+        }
+    }
+</script>
+{% endblock %}

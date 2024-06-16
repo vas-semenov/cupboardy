@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<head>
+    <h1 class="page-title">{% block title %}Login Page{% endblock %}</h1>
+    <link href="{{ url_for('static', filename='loginAssets/loginStyle.css') }}" type="text/css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-box login">
+            <form id="loginForm" method="POST">
+                {{ form.csrf_token() }}
+                <div class="Avatar">
+                    <img src="{{ url_for('static', filename='Avatar-Default.png') }}" alt="Avatar-Default">
+                </div>
+               <div class="input-box">
+                    <div class="email-icon-container-login">
+                        <i class='bx bx-envelope' style="color: #222"></i>
+                        <input type="email" name="loginEmail" id="loginEmail" required>
+                        <label for="login-email">Email</label>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="loginPassword" id="loginPassword" required>
+                    <label for="login-password">Password</label>
+                    <img src="{{ url_for('static', filename='password-view-false.png') }}" onclick="togglePasswordVisibility('loginPassword', 'eye-icon-login-password')" class="pass-icon" id="eye-icon-loginPassword" width="20px">
+                </div>
+                <button class="btn" name="submit" type="submit">Login</button>
+                <a class="btn" type="button" onclick="window.location.href='{{ url_for('users.change_password_email') }}'">Forgot Password?</a>
+            </form>
+            <div class="registerChevron" onclick="loadRegisterPage()">
+                    <a href=" {{ url_for('users.register') }}"></a><i class='bx bxs-chevrons-left registerBtn'></i>
+                    <span class="registerPageText">Return to Register</span>
+                </div>
+        </div>
+    </div>
+     <script src="{{ url_for('static', filename='loginAssets/loginJS.js') }}"></script>
+</body>
+
+{% endblock %}

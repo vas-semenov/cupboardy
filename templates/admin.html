@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Page{% endblock %}
+{% block page_title %}Admin Page{% endblock %}
+
+{% block content %}
+<link href="{{ url_for('static', filename='adminAssets/adminStyle.css') }}" type="text/css" rel="stylesheet">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+<div class="container">
+    <h3>View Customer Details</h3>
+    <div class="display_box">
+        {% if current_users %}
+            <div class="display_box">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                                <th>Email Address</th>
+                                <th>Name</th>
+                                <th>Registered on</th>
+                                <th>Last login</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             {% for user in current_users %}
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.firstname }}</td>
+                                    <td>{{ user.registered_on }}</td>
+                                    <td>{{ user.last_login }}</td>
+                                </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        <form action="/view_customers">
+            <div>
+                <button class="btn">View All Users</button>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="display_box">
+        {% if expired_food_stats %}
+            <div class="field">
+                <table class="table">
+                    <thead>
+                    <tr>
+                            <th>Customer Email</th>
+                            <th>Food Item</th>
+                            <th>Amount</th>
+                            <th>Expiry Date</th>
+                            <th>Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stat in expired_food_stats %}
+                            <tr>
+                                <td>{{ stat.email }}</td>
+                                <td>{{ stat.product_name }}</td>
+                                <td>{{ stat.amount }}</td>
+                                <td>{{ stat.expiration_date.strftime("%Y-%m-%d") }}</td>
+                                <td>{{ stat.units }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    <!--
+        <form action="/view_food_stats">
+            <div>
+                <button class="btn">View All Expired Food</button>
+            </div>
+        </form>
+        -->
+    </div>
+
+    <h3>New Admin User</h3>
+    <div class="display_box">
+        <form action="/add_admin" method="POST">
+            <div class="field">
+                <div class="control">
+                    <button type="submit" class="btn">Add New Admin</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <h3>Send Food Reminder</h3>
+    <div class="display_box">
+        <form action="/send_updates" method="GET">
+            <div class="field">
+                <div class="control">
+                    <button type="submit" class="btn">Send</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}

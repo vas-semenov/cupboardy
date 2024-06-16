@@ -1,0 +1,70 @@
+<!--
+     Author: Thomas Reece
+     Description: Shows a form to enter a postcode, and then finds nearby food banks, showing these as a list with
+     contact details, along with a map showing their locations.
+-->
+{% extends 'base.html' %}
+
+{% block title %}Donate{% endblock %}
+{% block page_title %}Donate Page{% endblock %}
+
+{% block content %}
+<link href="{{ url_for('static', filename='donateAssets/donateStyle.css') }}" type="text/css" rel="stylesheet">
+<div class="container">
+    <h1>Find Food Banks Near You</h1>
+    <form action="/donate" method="post">
+        <div>
+            <label for="postcode">Enter your postcode:</label>
+            <input type="text" id="postcode" name="postcode" required>
+        </div>
+        <button type="submit">Find Food Banks</button>
+    </form>
+    {% if food_banks %}
+    <h2>Food Banks Near {{ postcode }}</h2>
+    <div class="food-bank-section">
+        <div id="map"></div> <!-- This is where the map will be displayed -->
+        <ul>
+            {% for food_bank in food_banks %}
+            <li>
+                <h3>{{ food_bank.name }}</h3>
+                <p>Address: {{ food_bank.address }}</p>
+                {% if food_bank.phone_number %}
+                <p>Phone: {{ food_bank.phone_number }}</p>
+                {% endif %}
+                {% if food_bank.website %}
+                <p>Website: <a href="{{ food_bank.website }}">{{ food_bank.website }}</a></p>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            center: {lat: {{ latitude }}, lng: {{ longitude }}}
+        });
+
+        {% for food_bank in food_banks %}
+        var marker = new google.maps.Marker({
+            position: {lat: {{ food_bank.latitude }}, lng: {{ food_bank.longitude }}},
+            map: map
+        });
+        {% endfor %}
+    }
+
+    function checkMapLoad() {
+        if (typeof google === 'undefined') {
+            document.getElementById('map').style.display = 'none';
+            document.getElementById('map-error').style.display = 'block';
+        }
+    }
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAALiJ5omMUZn4pGvsYDvLEePC8NJiZTis&callback=initMap"
+    onload="checkMapLoad()" onerror="checkMapLoad()"></script>
+
+{% endblock %}

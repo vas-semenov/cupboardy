@@ -1,0 +1,92 @@
+<!--
+     Author: Thomas Reece
+     Description: Displays a home page, showing images of functionalities and introducing the user to the site.
+-->
+
+{% extends 'base.html' %}
+
+{% block title %}Cupboardy - Optimize Your Cupboard{% endblock %}
+
+{% block content %}
+<section style="text-align: center; padding: 40px; background-color: #f8f9fa;">
+    <h1>Welcome to Cupboardy</h1>
+    <p>Revolutionize the way you manage your cupboard and reduce food waste effortlessly.</p>
+</section>
+
+<section style="padding: 40px; background-color: #ffffff;">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2>Our Features</h2>
+        <p>Explore the key functionalities of Cupboardy designed to help you save food and money.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start;">
+        <div style="flex: 1 1 30%; margin: 20px; text-align: center;">
+            <img src="static/Inventory.png" alt="Inventory Management" style="width: 300px; height: auto; margin-bottom: 20px;">
+            <h3>Inventory Management</h3>
+            <p>Keep an organized inventory of your cupboard items with ease.</p>
+        </div>
+        <div style="flex: 1 1 30%; margin: 20px; text-align: center;">
+            <img src="static/Alert.webp" alt="Expiration Alerts" style="width: 300px; height: auto; margin-bottom: 20px;">
+            <h3>Expiration Alerts</h3>
+            <p>Receive timely reminders to use products before they expire.</p>
+        </div>
+        <div style="flex: 1 1 30%; margin: 20px; text-align: center;">
+            <img src="static/food_banks.png" alt="Nearest food banks" style="width: 300px; height: auto; margin-bottom: 20px;">
+            <h3>Find Local Food Banks</h3>
+            <p>Enter your postcode to receive up to date information about your nearest food banks!</p>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 40px; background-color: #f1f1f1;">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2>How It Works</h2>
+        <p>Using Cupboardy is simple and effective. Here's how:</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-around; align-items: flex-start;">
+        <div style="flex: 1 1 30%; margin: 20px; text-align: center;">
+            <img src="static/search.png" alt="Add Items" style="width: 300px; height: auto; margin-bottom: 20px;">
+            <h3>Add Items</h3>
+            <p>Add items to your virtual cupboard by using an easy search function.</p>
+        </div>
+        <div style="flex: 1 1 30%; margin: 20px; text-align: center;">
+            <img src="static/expiry_date.png" alt="Track Expiration" style="width: 300px; height: auto; margin-bottom: 20px;">
+            <h3>Track Expiration</h3>
+            <p>Monitor expiration dates and get alerts for upcoming expirations.</p>
+        </div>
+        <!-- Step 3: Find Recipes -->
+        <div style="flex: 1 1 30%; margin: 20px; text-align: center;">
+            <img src="static/food_bank_search.png" alt="Find local food banks" style="width: 300px; height: auto; margin-bottom: 20px;">
+            <h3>Find local food banks</h3>
+            <p>Find purpose for your excess food by donating to local food banks.</p>
+        </div>
+    </div>
+</section>
+
+<section style="padding: 40px; background-color: #ffffff;">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2>Why Choose Cupboardy?</h2>
+        <p>See how Cupboardy can make a difference in your daily life and for the environment.</p>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+        <div style="flex: 1 1 45%; padding: 20px; text-align: center; border: 1px solid #ddd; border-radius: 8px; margin: 10px;">
+            <h3>Reduce Food Waste</h3>
+            <p>Minimize waste by keeping track of your cupboard items and their expiration dates.</p>
+        </div>
+        <div style="flex: 1 1 45%; padding: 20px; text-align: center; border: 1px solid #ddd; border-radius: 8px; margin: 10px;">
+            <h3>Save Money</h3>
+            <p>Spend less on groceries by using up what you already have before buying more.</p>
+        </div>
+        <div style="flex: 1 1 45%; padding: 20px; text-align: center; border: 1px solid #ddd; border-radius: 8px; margin: 10px;">
+            <h3>Convenient & Easy</h3>
+            <p>User-friendly interface makes managing your cupboard a breeze.</p>
+        </div>
+    </div>
+</section>
+
+<section style="text-align: center; padding: 40px; background-color: #d4edda;">
+    <h2>Get Started with Cupboardy</h2>
+    <p>Optimize your cupboard and reduce food waste today.</p>
+    <a href="/register" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: #ffffff; text-decoration: none; border-radius: 5px; margin: 10px;">Sign Up Now</a>
+    <a href="/login" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: #ffffff; text-decoration: none; border-radius: 5px; margin: 10px;">Log In</a>
+</section>
+{% endblock %}

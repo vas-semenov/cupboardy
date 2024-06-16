@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Product Detail{% endblock %}
+
+{% block content %}
+<style>
+    .product-detail {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .product-detail img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+    }
+    .product-info {
+        padding: 20px;
+    }
+    .nutrient-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    .nutrient-list li {
+        padding: 5px 0;
+    }
+</style>
+
+<div class="product-detail">
+    {% if product %}
+        <img src="{{ product.image_url }}" alt="{{ product.product_name }}">
+        <div class="product-info">
+            <h2>{{ product.product_name }}</h2>
+            <p><strong>Barcode:</strong> {{ product.barcode }}</p>
+            <h3>Nutritional Information:</h3>
+            <ul class="nutrient-list">
+                {% for key, value in product.nutriments.items() %}
+                    <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{{ url_for('inventory_bp.search', query=query) }}">Back to search results</a>
+        </div>
+    {% else %}
+        <p>{{ error }}</p>
+        <a href="{{ url_for('inventory_bp.search', query=query) }}">Back to search results</a>
+    {% endif %}
+</div>
+{% endblock %}

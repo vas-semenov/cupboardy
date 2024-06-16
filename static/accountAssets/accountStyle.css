@@ -1,0 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "monospace";
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* Ensure the body elements stack vertically */
+    align-items: center;
+    min-height: 100vh;
+    background: #c1d8f0;
+}
+
+.container {
+    height: 500px;
+    width: 1000px;
+    border: 2px solid rgba(255, 255, 255, .4);
+    border-radius: 10px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 30px 30px 0 rgba(0, 0, 0, .6);
+    position: relative;
+}
+
+.navigationBar {
+    background-color: #0784b5;
+    position: fixed; /* Make the navbar fixed at the top */
+    width: 100%; /* Ensure the navbar spans the full width of the viewport */
+    top: 0;
+    left: 0; /* Ensure the navbar is aligned to the left edge of the viewport */
+    z-index: 1000; /* Ensure the navbar is above other elements */
+    padding: 0; /* Reset any default padding */
+}
+
+.navDiv {
+    display: flex; /* Use flexbox for proper alignment */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* Center the navDiv */
+}
+
+.cupboardyLogo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.navigationBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navigationBar li {
+    margin: 0 10px;
+}
+
+.navigationBar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navigationBar li a:hover {
+    background-color: #066a91;
+}
+
+main {
+    padding-top: 60px; /* Add padding to the top of the main content to avoid overlap with the fixed navbar */
+    margin: 0; /* Ensure no margin in the main content */
+}
+
+/* Additional styles for other elements */
+.Avatar {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Avatar img {
+    width: 4rem;
+    height: 4rem;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid rgba(0, 0, 0, .6);
+    box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .1);
+}
+
+/* Button styling */
+.btn {
+    width: 100%;
+    height: 40px;
+    background: #0784b5;
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 20px; /* Add margin for spacing */
+    cursor: pointer;
+    letter-spacing: 1px;
+    color: black; /* Text color */
+    text-align: center; /* Center align text */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.btn:hover {
+    background-color: #066a91; /* Hover effect */
+}
+++
+.display_box {
+    width: 100%;
+    margin: 10px 0; /* Add margin for spacing */
+    display: flex;
+    flex-direction: column;
+}
+
+.display_box label {
+    margin-bottom: 5px; /* Add margin for spacing */
+    font-size: 1em;
+}

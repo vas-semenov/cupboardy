@@ -1,0 +1,285 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "monospace";
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* Ensure the body elements stack vertically */
+    align-items: center;
+    min-height: 100vh;
+    background: #c1d8f0;
+}
+
+.container {
+    height: 500px;
+    width: 1000px;
+    border: 2px solid rgba(255, 255, 255, .4);
+    border-radius: 10px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 30px 30px 0 rgba(0, 0, 0, .6);
+    position: relative;
+}
+
+.navigationBar {
+    background-color: #0784b5;
+    position: fixed; /* Make the navbar fixed at the top */
+    width: 100%; /* Ensure the navbar spans the full width of the viewport */
+    top: 0;
+    left: 0; /* Ensure the navbar is aligned to the left edge of the viewport */
+    z-index: 1000; /* Ensure the navbar is above other elements */
+    padding: 0; /* Reset any default padding */
+}
+
+.navDiv {
+    display: flex; /* Use flexbox for proper alignment */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto; /* Center the navDiv */
+}
+
+.cupboardyLogo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+}
+
+.navigationBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navigationBar li {
+    margin: 0 10px;
+}
+
+.navigationBar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navigationBar li a:hover {
+    background-color: #066a91;
+}
+
+main {
+    padding-top: 60px; /* Add padding to the top of the main content to avoid overlap with the fixed navbar */
+    margin: 0; /* Ensure no margin in the main content */
+}
+
+/* Additional styles for other elements */
+.Avatar {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Avatar img {
+    width: 4rem;
+    height: 4rem;
+    display: block;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid rgba(0, 0, 0, .6);
+    box-shadow: 0 .25rem 1rem rgba(0, 0, 0, .1);
+}
+
+.container .input-box {
+    width: 800px;
+    border-bottom: 2px solid #000;
+    margin: 20px 0; /* Adjusted margin to reduce spacing */
+    position: relative;
+}
+
+.container label {
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    transition: top 0.3s, font-size 0.3s; /* Smooth transition */
+}
+
+input:focus ~ label,
+input:valid ~ label,
+input:not(:placeholder-shown) ~ label { /* Added this selector */
+    top: -10px; /* Move the label up */
+    font-size: 12px; /* Reduce the font size */
+}
+
+.container input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    padding: 0 35px 0 5px;
+    height: 40px;
+    font-weight: 500;
+    color: #000;
+}
+
+.container .input-box i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 8px;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.container .input-box img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 8px;
+    font-size: 1.5em;
+    cursor: pointer;
+}
+
+.btn {
+    width: 100%;
+    height: 40px;
+    background: #0784b5;
+    border-radius: 5px;
+    border: none;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    letter-spacing: 1px;
+}
+
+.container .input-box .email-icon-container {
+    position: relative;
+}
+
+.container .input-box .email-icon-container-login {
+    position: relative;
+}
+
+.container .input-box .email-explanation-text {
+    position: absolute;
+    top: calc(50% + 20px); /* Move down by 10px */
+    left: calc(100% + 10px); /* Adjust as needed for spacing */
+    transform: translateY(-50%);
+    background-color: #000;
+    border: 15px solid;
+    border-color: #000 #0000 #0000 #0000;
+    color: #fff;
+    white-space: nowrap;
+    padding: 10px 15px;
+    border-radius: 7px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    font-size: 12px;
+}
+
+.container .input-box .email-explanation-text::before {
+    content: "";
+    position: absolute;
+    top: calc(50%);
+    right: 100%;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+}
+
+.container .input-box .email-icon-container:hover .email-explanation-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.registerBtn {
+    font-size: 30px;
+    position: absolute;
+    right: -25px;
+    top: -40px;
+    border: 2px solid #222222;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+
+.container .registerChevron {
+    position: absolute;
+    right: 20px;
+    top: 50px; /* Adjusted to align with form */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.container .registerChevron .registerPageText {
+    visibility: hidden;
+    opacity: 0;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 7px;
+    white-space: nowrap;
+    transition: opacity 0.5s ease;
+    position: absolute;
+    top: calc(50% - 20px);
+    left: calc(100% + 30px);
+    transform: translateY(-50%);
+    font-size: 12px;
+}
+
+.container .registerChevron .registerPageText::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #000 transparent transparent;
+}
+
+.container .registerChevron:hover .registerPageText {
+    visibility: visible;
+    opacity: 1;
+}
+
+form {
+    position: relative;
+}
+
+.form-box {
+    position: absolute;
+    transition: transform 1.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.form-box.register {
+    transform: translateX(0px) scale(1);
+}
+
+.form-box.active.register {
+    transform: translateX(420px) scale(0);
+}

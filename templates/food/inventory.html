@@ -1,0 +1,269 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventory{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-gap: 20px;
+    }
+    .box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+        position: relative;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .box img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px 10px 0 0;
+    }
+    .remove-button, .edit-button {
+        position: absolute;
+        top: 10px;
+        background: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .remove-button {
+        right: 10px;
+    }
+    .edit-button {
+        left: 10px;
+        background: yellow;
+        color: black;
+    }
+    .search-bar, .add-barcode-form, .add-custom-form {
+        margin-bottom: 20px;
+    }
+    .search-bar input, .search-bar button, .add-barcode-form input, .add-barcode-form button, .add-custom-form input, .add-custom-form button {
+        padding: 10px;
+        margin: 5px;
+    }
+    #barcodeForm, #customForm {
+        display: none;
+    }
+    .flex-container {
+        display: flex;
+        align-items: center;
+    }
+    .editable {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+
+<div class="centered">
+    <h2>Inventory</h2>
+    <div class="container">
+        <div class="flex-container search-bar">
+            <form method="GET" action="{{ url_for('inventory_bp.search') }}" style="display: flex;">
+                <input type="text" name="query" id="productSearch" placeholder="Search for a product">
+                <button type="submit">Search</button>
+            </form>
+            <button onclick="toggleBarcodeForm()">Add product with barcode</button>
+            <button onclick="toggleCustomForm()">Add custom product</button>
+            <form onsubmit="searchInventory(); return false;" style="display: flex; margin-left: 10px;">
+                <input type="text" id="inventorySearch" placeholder="Search in inventory" oninput="searchInventory()">
+                <button type="button" onclick="searchInventory()">Search</button>
+            </form>
+            <form method="GET" action="{{ url_for('inventory_bp.inventory') }}" style="display: flex; margin-left: 10px;">
+                <select name="sort_by" onchange="this.form.submit()">
+                    <option value="">Sort by</option>
+                    <option value="expiration_date">Expiration Date</option>
+                </select>
+            </form>
+        </div>
+        <div id="searchResults" style="position: relative; z-index: 1000;"></div>
+        <form method="POST" action="{{ url_for('inventory_bp.add_food_item') }}" id="barcodeForm" class="add-barcode-form">
+            <input type="hidden" name="user_id" value="{{ current_user.id }}">
+            <input type="text" name="barcode" placeholder="Enter barcode" required>
+            <input type="number" name="amount" placeholder="Enter amount" required>
+            <input type="text" name="units" placeholder="Enter units" required>
+            <input type="date" name="expiration_date" placeholder="Enter expiration date" required>
+            <button type="submit">Add Food Item</button>
+        </form>
+        <form method="POST" action="{{ url_for('inventory_bp.add_custom_food_item') }}" id="customForm" class="add-custom-form">
+            <form method="POST" action="{{ url_for('inventory_bp.add_custom_food_item') }}" id="customForm" class="add-custom-form">
+                <input type="hidden" name="user_id" value="{{ current_user.id }}">
+                <input type="text" name="name" placeholder="Enter product name" required>
+                <input type="number" name="amount" placeholder="Enter amount" required>
+                <input type="text" name="units" placeholder="Enter units" required>
+                <input type="date" name="expiration_date" placeholder="Enter expiration date" required>
+                <input type="url" name="image_url" placeholder="Enter image URL">
+                <button type="submit">Add Custom Item</button>
+            </form>
+        </form>
+    </div>
+    <div class="container">
+        <div id="inventoryItems" class="grid">
+            {% for item in items %}
+            <div class="box">
+                <form method="POST" action="{{ url_for('inventory_bp.remove_food_item') }}">
+                    {% if item.food_id %}
+                        <input type="hidden" name="food_id" value="{{ item.food_id }}">
+                    {% endif %}
+                    {% if item.cfood_id %}
+                        <input type="hidden" name="cfood_id" value="{{ item.cfood_id }}">
+                    {% endif %}
+                    <button type="submit" class="remove-button">Remove</button>
+                </form>
+                <button class="edit-button" onclick="toggleEditForm('{{ item.food_id or item.cfood_id }}', '{{ 'custom' if item.cfood_id else 'standard' }}')">Edit</button>
+                <img src="{{ item.image_url }}" alt="{{ item.product_name }}">
+                <div id="view-section-{{ item.food_id or item.cfood_id }}">
+                    <p><strong>{{ item.product_name }}</strong></p>
+                    <p>Amount: {{ item.amount }} {{ item.units }}</p>
+                    <p>Expiration Date: {{ item.expiration_date.strftime('%Y-%m-%d') }}</p>
+                    <p>Categories: {{ item.categories }}</p>
+                    <p>Ingredients: {{ item.ingredients_text }}</p>
+                </div>
+                <div id="edit-section-{{ item.food_id or item.cfood_id }}" class="editable" style="display:none;">
+                    <form id="edit-form-{{ item.food_id or item.cfood_id }}" onsubmit="return updateFoodItem(event, '{{ item.food_id or item.cfood_id }}', '{{ 'custom' if item.cfood_id else 'standard' }}')">
+                        <label>Amount:</label>
+                        <input type="number" name="amount" value="{{ item.amount }}" required>
+                        <label>Units:</label>
+                        <input type="text" name="units" value="{{ item.units }}" required>
+                        <label>Expiration Date:</label>
+                        <input type="date" name="expiration_date" value="{{ item.expiration_date.strftime('%Y-%m-%d') }}" required>
+                        {% if item.food_id %}
+                            <input type="hidden" name="food_id" value="{{ item.food_id }}">
+                        {% endif %}
+                        {% if item.cfood_id %}
+                            <input type="hidden" name="cfood_id" value="{{ item.cfood_id }}">
+                        {% endif %}
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleBarcodeForm() {
+        var form = document.getElementById("barcodeForm");
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+
+    function toggleCustomForm() {
+        var form = document.getElementById("customForm");
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+
+    function toggleEditForm(id, type) {
+        var viewSection = document.getElementById(`view-section-${id}`);
+        var editSection = document.getElementById(`edit-section-${id}`);
+        if (editSection.style.display === "none") {
+            editSection.style.display = "block";
+            viewSection.style.display = "none";
+        } else {
+            editSection.style.display = "none";
+            viewSection.style.display = "block";
+        }
+    }
+
+    async function updateFoodItem(event, id, type) {
+        event.preventDefault();
+        const form = document.getElementById(`edit-form-${id}`);
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(type === 'custom' ? `/update_custom_food_item` : `/update_food_item`, {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            });
+
+            if (response.ok) {
+                location.reload();
+            } else {
+                const data = await response.json();
+                alert('Failed to update food item: ' + data.error);
+            }
+        } catch (error) {
+            alert('Error: ' + error);
+        }
+    }
+
+    async function searchProducts() {
+        const query = document.getElementById('productSearch').value;
+        const searchResults = document.getElementById('searchResults');
+        searchResults.innerHTML = ''; // Clear previous results
+
+        if (query.length < 3) return; // Only search for queries longer than 2 characters
+
+        try {
+            const response = await fetch(`/search_products?query=${query}`);
+            const data = await response.json();
+
+            data.products.slice(0, 5).forEach(product => {
+                const item = document.createElement('div');
+                item.innerHTML = `
+                    <div class="box" onclick="addProductToInventory('${product.code}', '${product.product_name}', '${product.image_url}')">
+                        <img src="${product.image_url || 'placeholder.jpg'}" alt="${product.product_name}">
+                        <p><strong>${product.product_name}</strong></p>
+                    </div>
+                `;
+                searchResults.appendChild(item);
+            });
+        } catch (error) {
+            console.error('Error fetching search results:', error);
+        }
+    }
+
+    async function searchInventory() {
+        const query = document.getElementById('inventorySearch').value.toLowerCase();
+        const inventoryItems = document.getElementById('inventoryItems');
+        const items = inventoryItems.getElementsByClassName('box');
+
+        Array.from(items).forEach(item => {
+            const productName = item.querySelector('p strong').textContent.toLowerCase();
+            if (productName.includes(query)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    function addProductToInventory(barcode, productName, imageUrl) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ url_for("inventory_bp.add_food_item_by_barcode") }}';
+
+        form.innerHTML = `
+            <input type="hidden" name="barcode" value="${barcode}">
+            <input type="hidden" name="product_name" value="${productName}">
+            <input type="hidden" name="image_url" value="${imageUrl}">
+        `;
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+{% endblock %}

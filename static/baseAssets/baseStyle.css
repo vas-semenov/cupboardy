@@ -1,0 +1,57 @@
+h1 {
+    text-align: center;
+}
+
+.page-title {
+    color: white;
+    font-size: 2.5em;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Navigation bar Styling */
+.navigationBar {
+    background-color: #0784b5;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.navDiv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Changed to space-between for better alignment */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cupboardyLogo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    float: left;
+}
+
+.navigationBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center; /* Ensure items are centered vertically */
+}
+
+.navigationBar li {
+    margin: 0 10px;
+}
+
+.navigationBar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.navigationBar li a:hover {
+    background-color: #066a91;
+}

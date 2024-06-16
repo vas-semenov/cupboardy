@@ -1,0 +1,12 @@
+Coding conventions:
+
+- Used snake case for all variable names
+- Commited code with meaningful commit messages
+- Used pull requests for reviewing and merging code
+- Commented all code, including descriptions and author names
+- Regularly reviewed and made change to each other's code when necessary
+- Organised code into separate directories
+- Functions are small and used for individual tasks
+- Errors are handled gracefully
+- Unit tests have been written with descriptive test names.
+

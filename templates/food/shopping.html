@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<link href="{{ url_for('static', filename='shopping_listAssets/shopping_listStyle.css') }}" type="text/css" rel="stylesheet">
+    <div class="container">
+        <h2>Shopping List</h2>
+        <div class="search-bar">
+            <form method="POST">
+                <input type="text" name="item" placeholder="Enter Item" required>
+                <button type="submit">Add Food Item</button>
+            </form>
+            <form action="{{ url_for('shopping.export_email') }}" method="POST">
+                <button type="submit">Export Email</button>
+            </form>
+        </div>
+
+        <div class="items">
+            {% for item in items %}
+                <div class="box">
+                    <p>{{ item.name }}</p>
+                    <form method="POST" action="{{ url_for('shopping.remove_shopping_list') }}">
+                        <input type="hidden" name="food_id" value="{{ item.food_id }}">
+                        <button type="submit" class="remove-button">Remove</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
